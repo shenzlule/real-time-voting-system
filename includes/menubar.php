@@ -1,4 +1,4 @@
-<aside class="main-sidebar">
+<aside class="main-sidebar" >
   <!-- sidebar: style can be found in sidebar.less -->
   <section class="sidebar">
     <!-- Sidebar user panel -->
@@ -33,12 +33,7 @@
   </a>
 </li>
 
-<li>
-  <a href="profile.php" class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 rounded">
-  <i class="fas fa-user-circle text-yellow-600"></i> <!-- Profile Icon -->
-    <span>Profile</span>
-  </a>
-</li>
+
 <li class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Vote Track</li>
 
 
@@ -68,6 +63,21 @@
   </a>
 </li>
 
+
+<!-- SETTINGS Section -->
+<li class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4">Settings</li>
+<li>
+  <a href="profile.php" class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 rounded">
+  <i class="fas fa-user-circle text-yellow-600"></i> <!-- Profile Icon -->
+    <span>Profile</span>
+  </a>
+</li>
+<li>
+  <a href="logout.php"  class="flex items-center space-x-3 px-4 py-2 hover:bg-gray-100 rounded">
+  <i class="fas fa-sign-out-alt text-red-600"></i> <!-- Logout Icon -->
+    <span>Logout</span>
+  </a>
+</li>
 
     </ul>
   </section>

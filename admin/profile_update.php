@@ -6,7 +6,7 @@
 		
 	}
 	else{
-		$return = 'home.php';
+		$return = 'overview.php';
 	}
 
 	if(isset($_POST['save'])){

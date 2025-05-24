@@ -1,6 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-yellow sidebar-mini" style="height: 100%;    background-color: #222d32;">
 <div class="wrapper">
 
   <?php include 'includes/navbar.php'; ?>
@@ -119,6 +119,25 @@ function getRow(id){
     }
   });
 }
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.querySelector(".sidebar-toggle");
+    const logoImageBox = document.querySelector(".div_imagee");
+
+    toggleBtn.addEventListener("click", () => {
+      // Optional: check the sidebar state here if needed
+
+      // Toggle the logo display manually or based on your condition
+      if (logoImageBox.style.display === "none") {
+        logoImageBox.style.display = "block";
+      } else {
+        logoImageBox.style.display = "none";
+      }
+
+      console.log("Sidebar toggle clicked");
+    });
+  });
 </script>
 </body>
 </html>

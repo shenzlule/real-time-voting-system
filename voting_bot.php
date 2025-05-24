@@ -14,10 +14,10 @@
     
 
 
-    <div class="bg-gray-100 h-screen flex flex-col m-6">
+    <div class="bg-gray-100 h-screen flex flex-col mx-6">
 
   <!-- Chat Container -->
-  <div class="flex-1 overflow-auto p-4 space-y-4" id="chat-box">
+  <div class="flex-1 overflow-auto p-4 space-y-6 bg-white" id="chat-box">
     <div class="text-center text-gray-500 mt-10 animate-fade-in">
       🤖 Ask me anything about <strong>UMU University, voting process, candidates</strong> and more.
       <div class="mt-2 text-md text-gray-400">Examples: <br>
@@ -32,7 +32,7 @@
 <div class="bg-white p-4 shadow-lg flex items-center rounded-xl border border-gray-200 mx-4 my-6 animate-fade-in-up">
   <!-- Input with Icon -->
   <div class="relative flex-1">
-    <input id="user-input" type="text" placeholder="Ask me anything about UMU..." 
+    <input id="user-input" type="text" placeholder="Ask me anything about Voting..." 
            class="w-full pl-12 pr-4 py-3 rounded-lg border-2 border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent text-gray-700 shadow-inner transition duration-300 ease-in-out"
            onkeydown="if(event.key==='Enter') sendMessage()">
     <div class="absolute left-4 top-3 text-gray-400">

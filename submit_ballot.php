@@ -12,6 +12,15 @@
 			$query = $conn->query($sql);
 			$error = false;
 			$sql_array = array();
+
+			$election_id = isset($_POST['election_id']) ? $_POST['election_id'] : null;
+if (!$election_id) {
+    $_SESSION['error'][] = 'Invalid election context.';
+    header('location: home.php');
+    exit();
+}
+
+
 			while($row = $query->fetch_assoc()){
 				$position = slugify($row['description']);
 				$pos_id = $row['id'];
@@ -23,7 +32,9 @@
 						}
 						else{
 							foreach($_POST[$position] as $key => $values){
-								$sql_array[] = "INSERT INTO votes (voters_id, candidate_id, position_id) VALUES ('".$voter['id']."', '$values', '$pos_id')";
+								$sql_array[] = "INSERT INTO votes (voters_id, candidate_id, position_id, election_id) 
+                VALUES ('".$voter['id']."', '$values', '$pos_id', '$election_id')";
+
 							}
 
 						}
@@ -31,7 +42,9 @@
 					}
 					else{
 						$candidate = $_POST[$position];
-						$sql_array[] = "INSERT INTO votes (voters_id, candidate_id, position_id) VALUES ('".$voter['id']."', '$candidate', '$pos_id')";
+						$sql_array[] = "INSERT INTO votes (voters_id, candidate_id, position_id, election_id) 
+                VALUES ('".$voter['id']."', '$candidate', '$pos_id', '$election_id')";
+
 					}
 
 				}
@@ -55,6 +68,6 @@
 		$_SESSION['error'][] = 'Select candidates to vote first';
 	}
 
-	header('location: home.php');
+	header('location: vote.php');
 
 ?>

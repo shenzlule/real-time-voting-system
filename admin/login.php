@@ -10,7 +10,9 @@
 		$query = $conn->query($sql);
 
 		if($query->num_rows < 1){
-			$_SESSION['error'] = 'Cannot find account with the username';
+			$_SESSION['error'] = 'Invalid admin credentials';
+			header('location: index.php');
+		    exit;
 		}
 		else{
 			$row = $query->fetch_assoc();
@@ -19,14 +21,19 @@
 			}
 			else{
 				$_SESSION['error'] = 'Incorrect password';
+				header('location: index.php');
+		exit;
 			}
 		}
 		
 	}
 	else{
 		$_SESSION['error'] = 'Input admin credentials first';
+		header('location: index.php');
+		exit;
+
 	}
 
-	header('location: index.php');
-
+	header('location: overview.php');
+    
 ?>

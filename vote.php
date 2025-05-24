@@ -1,5 +1,40 @@
 <?php include 'includes/session.php'; ?>
 
+<?php
+  $title_ = 'No Active Election';
+  $voting_status = 'Ended';
+  $election = null;
+  $has_active_election = false; // 🚩 Your boolean flag
+  $election_id = null; // 🆕 Add this to store the ID
+
+  $sql = "SELECT * FROM elections 
+          WHERE status IN ('ongoing', 'none') 
+          ORDER BY FIELD(status, 'ongoing', 'none'), election_date ASC, start_time ASC 
+          LIMIT 1";
+  $query = $conn->query($sql);
+
+  if ($query->num_rows > 0) {
+    $election = $query->fetch_assoc();
+    $election_id = $election['id']; // 🆕 Capture the election ID
+    $title_ = $election['election_name'];
+    $has_active_election = true; // ✅ Set to true since a valid election was found
+
+    $now = time();
+    $start = strtotime($election['election_date'] . ' ' . $election['start_time']);
+    $end = strtotime($election['election_date'] . ' ' . $election['end_time']);
+
+    if ($now >= $start && $now <= $end) {
+      $voting_status = 'Voting in progress';
+    } elseif ($now < $start) {
+      $voting_status = 'Voting yet to start';
+    } else {
+      $voting_status = 'Voting closed';
+    }
+  }
+?>
+
+
+
 <?php include 'includes/header.php'; ?>
 <body class="hold-transition skin-yellow sidebar-mini">
 <div class="wrapper">
@@ -14,9 +49,10 @@
 	     
 		  <section class="px-6 py-10">
   <h1 class="text-3xl md:text-4xl font-extrabold text-center text-blue-700 mb-10 tracking-wider">
-    <?php echo strtoupper($title); ?>
+    <?php echo $title_; ?>
   </h1>
 
+  <?php if ($has_active_election): ?>
   <div class="max-w-5xl mx-auto">
     <?php if (isset($_SESSION['error'])): ?>
       <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
@@ -43,7 +79,8 @@
     </div>
 
     <?php 
-	$sql = "SELECT * FROM votes WHERE voters_id = '".$voter['id']."'";
+  $sql = "SELECT * FROM votes WHERE voters_id = '".$voter['id']."' AND election_id = '".$election_id."'";
+
 	$vquery = $conn->query($sql);
 	if ($vquery->num_rows > 0): ?>
       <div class="text-center mb-10">
@@ -52,6 +89,8 @@
       </div>
     <?php else: ?>
       <form method="POST" id="ballotForm" action="submit_ballot.php" class="space-y-10">
+      <input type="hidden" name="election_id" value="<?php echo $election_id; ?>">
+
         <?php
           include 'includes/slugify.php';
           $candidate = '';
@@ -80,16 +119,18 @@
               $input = ($row['max_vote'] > 1) ? '<input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600 '.$slug.'" name="'.$slug.'[]" value="'.$crow['id'].'" '.$checked.'>' : '<input type="radio" class="form-radio h-5 w-5 text-blue-600 '.$slug.'" name="'.slugify($row['description']).'" value="'.$crow['id'].'" '.$checked.'>';
               $image = (!empty($crow['photo'])) ? 'images/'.$crow['photo'] : 'images/profile.jpg';
               $candidate .= '
-                <li class="flex items-center gap-4 py-3 border-b">
-                  '.$input.'
-                  <img src="'.$image.'" alt="Candidate Photo" class="w-16 h-16 object-cover rounded-full">
-                  <div>
-                    <p class="font-medium text-gray-800">'.$crow['firstname'].' '.$crow['lastname'].'</p>
-                    <button type="button" class="text-sm text-blue-600 hover:underline platform" data-platform="'.$crow['platform'].'" data-fullname="'.$crow['firstname'].' '.$crow['lastname'].'">
-                      <i class="fa fa-search"></i> Platform
-                    </button>
-                  </div>
-                </li>
+               
+                <li class="flex items-center space-x-4 bg-gray-50 hover:bg-gray-100 p-4 rounded-lg shadow-sm transition duration-200 mb-2">
+			 
+                '.$input.'
+			  <img src="'.$image.'" alt="Candidate Image" class="w-16 h-16 rounded-full object-cover shadow-md border border-gray-300 clist" />
+
+			  <div class="flex flex-col">
+      <span class="cname clist text-gray-800 font-medium">'.$crow['firstname'].' '.$crow['lastname'].'</span>
+      <span class="clist text-sm text-gray-600 font-medium">'.$crow['campaign_slogan'].'</span>
+    </div>
+			</li>
+
               ';
             }
 
@@ -121,12 +162,12 @@
       </form>
     <?php endif; ?>
   </div>
+  <?php endif; ?>
+
 </section>
 
 	    </div>
-		<div class="container">
-
-	  </div>
+		
 	  </div>
   
   

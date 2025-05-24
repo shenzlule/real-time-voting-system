@@ -1,14 +1,11 @@
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
-
 <header class="main-header">
   <!-- Logo -->
   <a href="#" class="logo">
     <!-- mini logo for sidebar mini 50x50 pixels -->
     <span class="logo-mini"><b>R</b>TV</span>
     <!-- logo for regular state and mobile devices -->
-    <span class="logo-lg"><b>RealTime</b> Vote</span>
+    <span class="logo-lg"><b>Real-Time</b> Vote</span>
   </a>
   <!-- Header Navbar: style can be found in header.less -->
   <nav class="navbar navbar-static-top">
@@ -20,47 +17,39 @@
     <div class="navbar-custom-menu">
       <ul class="nav navbar-nav">
         <!-- User Account: style can be found in dropdown.less -->
-        <li class="dropdown user user-menu">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <li class=" user user-menu ">
+          <a href="#" class="dropdown-toggle" >
             <img src="<?php echo (!empty($user['photo'])) ? '../images/'.$user['photo'] : '../images/profile.jpg'; ?>" class="user-image" alt="User Image">
             <span class="hidden-xs"><?php echo $user['firstname'].' '.$user['lastname']; ?></span>
           </a>
-          <ul class="dropdown-menu">
-            <!-- User image -->
-            <li class="user-header">
-              <img src="<?php echo (!empty($user['photo'])) ? '../images/'.$user['photo'] : '../images/profile.jpg'; ?>" class="img-circle" alt="User Image">
-
-              <p>
-                <?php echo $user['firstname'].' '.$user['lastname']; ?>
-                <small>Member since <?php echo date('M. Y', strtotime($user['created_on'])); ?></small>
-              </p>
-            </li>
-            <li class="user-footer">
-              <div class="pull-left">
-                <a href="#profile" data-toggle="modal" class="btn btn-default btn-flat" id="admin_profile">Profile</a>
-              </div>
-              <div class="pull-right">
-                <a href="logout.php" class="btn btn-default btn-flat">Log out</a>
-              </div>
-            </li>
-          </ul>
+         
         </li>
       </ul>
     </div>
   </nav>
 </header>
 
-<!-- Script to toggle dropdown -->
+
+
 <script>
-  const menuButton = document.getElementById('menu-button');
-  const dropdownMenu = document.getElementById('dropdown-menu');
-  menuButton.addEventListener('click', () => {
-    dropdownMenu.classList.toggle('hidden');
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.querySelector(".sidebar-toggle");
+    const logoImageBox = document.querySelector(".div_imagee");
+
+    toggleBtn.addEventListener("click", () => {
+      // Optional: check the sidebar state here if needed
+
+      // Toggle the logo display manually or based on your condition
+      if (logoImageBox.style.display === "none") {
+        logoImageBox.style.display = "block";
+      } else {
+        logoImageBox.style.display = "none";
+      }
+
+      console.log("Sidebar toggle clicked");
+    });
   });
 </script>
-
-
-
 
 
 

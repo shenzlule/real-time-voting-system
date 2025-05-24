@@ -19,44 +19,62 @@
 		while($crow = $cquery->fetch_assoc()){
 			$image = (!empty($crow['photo'])) ? '../images/'.$crow['photo'] : '../images/profile.jpg';
 			$candidate .= '
-				<li>
-					'.$input.'<button class="btn btn-primary btn-sm btn-flat clist"><i class="fa fa-search"></i> Platform</button><img src="'.$image.'" height="100px" width="100px" class="clist"><span class="cname clist">'.$crow['firstname'].' '.$crow['lastname'].'</span>
-				</li>
-			';
+			<li class="flex items-center space-x-4 bg-gray-50 hover:bg-gray-100 p-4 rounded-lg shadow-sm transition duration-200 mb-2">
+			 
+			 
+			  <img src="'.$image.'" alt="Candidate Image" class="w-16 h-16 rounded-full object-cover shadow-md border border-gray-300 clist" />
+
+			  <div class="flex flex-col">
+      <span class="cname clist text-gray-800 font-medium">'.$crow['firstname'].' '.$crow['lastname'].'</span>
+      <span class="clist text-sm text-gray-600 font-medium">'.$crow['campaign_slogan'].'</span>
+    </div>
+			</li>
+		  ';
+		  
 		}
 
-		$instruct = ($row['max_vote'] > 1) ? 'You may select up to '.$row['max_vote'].' candidates' : 'Select only one candidate';
+		$instruct ='Candidates';
 		
 		$updisable = ($row['priority'] == 1) ? 'disabled' : '';
 		$downdisable = ($row['priority'] == $pquery->num_rows) ? 'disabled' : '';
 
 		$output .= '
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="box box-solid" id="'.$row['id'].'">
-						<div class="box-header with-border">
-							<h3 class="box-title"><b>'.$row['description'].'</b></h3>
-							<div class="pull-right box-tools">
-				                <button type="button" class="btn btn-default btn-sm moveup" data-id="'.$row['id'].'" '.$updisable.'><i class="fa fa-arrow-up"></i> </button>
-				                <button type="button" class="btn btn-default btn-sm movedown" data-id="'.$row['id'].'" '.$downdisable.'><i class="fa fa-arrow-down"></i></button>
-				            </div>
-						</div>
-						<div class="box-body">
-							<p>'.$instruct.'
-								<span class="pull-right">
-									<button type="button" class="btn btn-success btn-sm btn-flat reset" data-desc="'.slugify($row['description']).'"><i class="fa fa-refresh"></i> Reset</button>
-								</span>
-							</p>
-							<div id="candidate_list">
-								<ul>
-									'.$candidate.'
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		';
+<div class="flex flex-col mt-4 gap-4 w-full" id="'.$row['id'].'">
+  <div class="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-lg transition-all duration-300">
+    
+    <!-- Header -->
+    <div class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-t-2xl">
+      <h3 class="text-white font-semibold text-lg">
+        <b>'.$row['description'].'</b>
+      </h3>
+      <div class="flex space-x-2">
+        <button type="button" class="btn moveup text-white hover:bg-indigo-600 bg-indigo-400 px-3 py-1 rounded-md text-sm" data-id="'.$row['id'].'" '.$updisable.'>
+          <i class="fa fa-arrow-up"></i>
+        </button>
+        <button type="button" class="btn movedown text-white hover:bg-purple-600 bg-purple-400 px-3 py-1 rounded-md text-sm" data-id="'.$row['id'].'" '.$downdisable.'>
+          <i class="fa fa-arrow-down"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="p-6 space-y-4">
+      <div class="flex justify-between items-center">
+        <p class="text-gray-700">'.$instruct.'</p>
+       
+      </div>
+
+      <!-- Candidate List -->
+      <div id="candidate_list" class="pl-4">
+        <ul class="list-disc text-gray-800 space-y-1">
+          '.$candidate.'
+        </ul>
+      </div>
+    </div>
+    
+  </div>
+</div>';
+
 
 		$sql = "UPDATE positions SET priority = '$num' WHERE id = '".$row['id']."'";
 		$conn->query($sql);

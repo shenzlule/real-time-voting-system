@@ -1,6 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-yellow sidebar-mini" style="height: 100%;    background-color: #222d32;">
 <div class="wrapper">
 
   <?php include 'includes/navbar.php'; ?>
@@ -46,7 +46,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header with-border">
-              <a href="#reset" data-toggle="modal" class="btn btn-danger btn-sm btn-flat"><i class="fa fa-refresh"></i> Reset</a>
+              <!-- <a href="#reset" data-toggle="modal" class="btn btn-danger btn-sm btn-flat"><i class="fa fa-refresh"></i> Reset</a> -->
             </div>
             <div class="box-body">
               <table id="example1" class="table table-bordered">
@@ -84,5 +84,24 @@
   <?php include 'includes/votes_modal.php'; ?>
 </div>
 <?php include 'includes/scripts.php'; ?>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggleBtn = document.querySelector(".sidebar-toggle");
+    const logoImageBox = document.querySelector(".div_imagee");
+
+    toggleBtn.addEventListener("click", () => {
+      // Optional: check the sidebar state here if needed
+
+      // Toggle the logo display manually or based on your condition
+      if (logoImageBox.style.display === "none") {
+        logoImageBox.style.display = "block";
+      } else {
+        logoImageBox.style.display = "none";
+      }
+
+      console.log("Sidebar toggle clicked");
+    });
+  });
+</script>
 </body>
 </html>

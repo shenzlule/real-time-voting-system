@@ -17,6 +17,8 @@
     </div>
 </div>
 
+
+
 <!-- Add -->
 <div class="modal fade" id="addnew">
     <div class="modal-dialog">
@@ -155,17 +157,33 @@
               <h4 class="modal-title"><b>Deleting...</b></h4>
             </div>
             <div class="modal-body">
-              <form class="form-horizontal" method="POST" action="candidates_delete.php">
-                <input type="hidden" class="id" name="id">
-                <div class="text-center">
-                    <p>DELETE CANDIDATE</p>
-                    <h2 class="bold fullname"></h2>
-                </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-              <button type="submit" class="btn btn-danger btn-flat" name="delete"><i class="fa fa-trash"></i> Delete</button>
-              </form>
+              
+
+              <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="candidates_delete.php">
+              <input type="hidden" class="id" name="id">
+
+  <div class="modal-body">
+    <div class="callout callout-danger text-center" style="margin-bottom: 0;">
+      <h4 class="text-danger" style="font-weight: bold; font-size: 20px;">
+        <i class="fa fa-exclamation-triangle"></i> Confirm Deletion
+      </h4>
+      <p class="text-muted" style="margin-top: 10px; font-size: 16px;">
+        Are you sure you want to delete the election:
+      </p>
+      <h3 class="text-bold fullname text-danger" style="margin-top: 5px;"></h3>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal">
+      <i class="fa fa-close"></i> Cancel
+    </button>
+    <button type="submit" class="btn btn-danger btn-flat" name="delete">
+      <i class="fa fa-trash"></i> Yes, Delete
+    </button>
+  </div>
+</form>
+
             </div>
         </div>
     </div>

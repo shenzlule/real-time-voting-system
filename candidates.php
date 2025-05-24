@@ -1,4 +1,53 @@
-<?php include 'includes/session.php'; ?>
+<?php include 'includes/session.php';
+// $sql = "SELECT * FROM candidates ORDER BY id ASC";
+
+// Custom color palette for position IDs
+$colorMap = [
+  1 => 'blue',
+  2 => 'green',
+  3 => 'red',
+  4 => 'purple',
+  5 => 'yellow',
+  6 => 'indigo',
+  7 => 'pink',
+  8 => 'teal',
+  9 => 'orange',
+  10 => 'rose',
+  11 => 'lime',
+  12 => 'amber',
+  13 => 'violet',
+  14 => 'fuchsia',
+  15 => 'cyan',
+  16 => 'emerald',
+];
+
+$sql = "SELECT 
+          candidates.*, 
+          positions.description AS position_title
+        FROM candidates 
+        LEFT JOIN positions 
+          ON candidates.position_id = positions.id 
+        ORDER BY positions.priority ASC, candidates.id ASC";
+
+$query = $conn->query($sql);
+
+
+$grouped = [];
+
+// Group candidates by position
+while ($row = $query->fetch_assoc()) {
+    $position = $row['position_title'] ?: 'Unspecified Position';
+    $grouped[$position][] = $row;
+}
+
+// Move 'Unspecified Position' to the end
+if (isset($grouped['Unspecified Position'])) {
+  $unspecified = $grouped['Unspecified Position'];
+  unset($grouped['Unspecified Position']);
+  $grouped['Unspecified Position'] = $unspecified;
+}
+?>
+
 
 <?php include 'includes/header.php'; ?>
 <body class="hold-transition skin-yellow sidebar-mini">
@@ -21,150 +70,73 @@
 
 
   <div class="content-wrapper">
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+      <h1>
+      View Candidates
+</h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">candidates</li>
+      </ol>
+    </section>
+
+
 <!-- Main content -->
 <section class="content ">
 
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 animate-fadeIn">
-  <!-- Candidate Card -->
-  <div class="bg-white shadow-lg rounded-2xl p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-    <img src="images/profile.jpg" alt="Candidate Photo" class="w-32 h-32 rounded-full mx-auto shadow-md object-cover">
-    <h3 class="text-xl font-bold text-center mt-4 text-gray-800">Jane Achan</h3>
-    <p class="text-md text-gray-600 text-center mt-1">"Dedicated to sustainability and expanding student opportunities."</p>
-    <div class="mt-4 flex justify-center">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full transition-all duration-300 shadow-md">
-        Ask Me
-      </button>
+<?php foreach ($grouped as $position => $candidates): ?>
+  <?php
+    // Pick color class from first candidate’s position ID
+    $first = $candidates[0];
+    $color = $colorMap[$first['position_id']] ?? 'gray';
+  ?>
+
+  <div class="mb-12">
+    <h2 class="text-3xl font-bold text-<?php echo $color; ?>-700 mb-2 border-l-4 border-<?php echo $color; ?>-500 pl-4 shadow-sm">
+      <?php echo htmlspecialchars($position); ?>
+    </h2>
+    <hr class="border-t-2 border-<?php echo $color; ?>-300 mb-6">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <?php foreach ($candidates as $candidate): ?>
+        <div class="bg-white border-l-4 border-<?php echo $color; ?>-500 shadow-xl rounded-2xl p-6 transform hover:scale-105 transition duration-300">
+          <img src="images/<?php echo htmlspecialchars($candidate['photo']) ?: 'default.jpg'; ?>" 
+               alt="Candidate Photo" 
+               class="w-32 h-32 rounded-full mx-auto shadow-lg object-cover border-4 border-<?php echo $color; ?>-200">
+          <h3 class="text-xl font-semibold text-center mt-4 text-gray-800">
+            <?php echo htmlspecialchars($candidate['firstname'] . ' ' . $candidate['lastname']); ?>
+          </h3>
+          <p class="text-center italic text-<?php echo $color; ?>-600 mt-1">
+            "<?php echo htmlspecialchars($candidate['campaign_slogan']); ?>"
+          </p>
+          <p class="text-sm text-gray-600 text-center mt-2">
+            <?php echo htmlspecialchars($candidate['content']); ?>
+          </p>
+          <div class="mt-4 flex justify-center">
+            <button class="bg-<?php echo $color; ?>-600 hover:bg-<?php echo $color; ?>-700 text-white px-5 py-2 rounded-full shadow-md transition-all duration-300">
+              Ask Me
+            </button>
+          </div>
+        </div>
+      <?php endforeach; ?>
     </div>
   </div>
-
-  <!-- Duplicate or loop over more candidates as needed -->
-  <div class="bg-white shadow-lg rounded-2xl p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-    <img src="images/profile.jpg" alt="Candidate Photo" class="w-32 h-32 rounded-full mx-auto shadow-md object-cover">
-    <h3 class="text-xl font-bold text-center mt-4 text-gray-800">David Otim</h3>
-    <p class="text-md text-gray-600 text-center mt-1">"Empowering students through digital leadership and transparency."</p>
-    <div class="mt-4 flex justify-center">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full transition-all duration-300 shadow-md">
-        Ask Me
-      </button>
-    </div>
-  </div>
-
-
-  <div class="bg-white shadow-lg rounded-2xl p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-    <img src="images/profile.jpg" alt="Candidate Photo" class="w-32 h-32 rounded-full mx-auto shadow-md object-cover">
-    <h3 class="text-xl font-bold text-center mt-4 text-gray-800">Jane Achan</h3>
-    <p class="text-md text-gray-600 text-center mt-1">"Dedicated to sustainability and expanding student opportunities."</p>
-    <div class="mt-4 flex justify-center">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full transition-all duration-300 shadow-md">
-        Ask Me
-      </button>
-    </div>
-  </div>
-
-
-  <div class="bg-white shadow-lg rounded-2xl p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-    <img src="images/profile.jpg" alt="Candidate Photo" class="w-32 h-32 rounded-full mx-auto shadow-md object-cover">
-    <h3 class="text-xl font-bold text-center mt-4 text-gray-800">Jane Achan</h3>
-    <p class="text-md text-gray-600 text-center mt-1">"Dedicated to sustainability and expanding student opportunities."</p>
-    <div class="mt-4 flex justify-center">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full transition-all duration-300 shadow-md">
-        Ask Me
-      </button>
-    </div>
-  </div>
-
-
-  <div class="bg-white shadow-lg rounded-2xl p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-    <img src="images/profile.jpg" alt="Candidate Photo" class="w-32 h-32 rounded-full mx-auto shadow-md object-cover">
-    <h3 class="text-xl font-bold text-center mt-4 text-gray-800">Jane Achan</h3>
-    <p class="text-md text-gray-600 text-center mt-1">"Dedicated to sustainability and expanding student opportunities."</p>
-    <div class="mt-4 flex justify-center">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full transition-all duration-300 shadow-md">
-        Ask Me
-      </button>
-    </div>
-  </div>
-
-
-  <div class="bg-white shadow-lg rounded-2xl p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-    <img src="images/profile.jpg" alt="Candidate Photo" class="w-32 h-32 rounded-full mx-auto shadow-md object-cover">
-    <h3 class="text-xl font-bold text-center mt-4 text-gray-800">Jane Achan</h3>
-    <p class="text-md text-gray-600 text-center mt-1">"Dedicated to sustainability and expanding student opportunities."</p>
-    <div class="mt-4 flex justify-center">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full transition-all duration-300 shadow-md">
-        Ask Me
-      </button>
-    </div>
-  </div>
-
-
-  <div class="bg-white shadow-lg rounded-2xl p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-    <img src="images/profile.jpg" alt="Candidate Photo" class="w-32 h-32 rounded-full mx-auto shadow-md object-cover">
-    <h3 class="text-xl font-bold text-center mt-4 text-gray-800">Jane Achan</h3>
-    <p class="text-md text-gray-600 text-center mt-1">"Dedicated to sustainability and expanding student opportunities."</p>
-    <div class="mt-4 flex justify-center">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full transition-all duration-300 shadow-md">
-        Ask Me
-      </button>
-    </div>
-  </div>
-
-
-  <div class="bg-white shadow-lg rounded-2xl p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-    <img src="images/profile.jpg" alt="Candidate Photo" class="w-32 h-32 rounded-full mx-auto shadow-md object-cover">
-    <h3 class="text-xl font-bold text-center mt-4 text-gray-800">Jane Achan</h3>
-    <p class="text-md text-gray-600 text-center mt-1">"Dedicated to sustainability and expanding student opportunities."</p>
-    <div class="mt-4 flex justify-center">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full transition-all duration-300 shadow-md">
-        Ask Me
-      </button>
-    </div>
-  </div>
-
-
-  <div class="bg-white shadow-lg rounded-2xl p-6 transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-    <img src="images/profile.jpg" alt="Candidate Photo" class="w-32 h-32 rounded-full mx-auto shadow-md object-cover">
-    <h3 class="text-xl font-bold text-center mt-4 text-gray-800">Jane Achan</h3>
-    <p class="text-md text-gray-600 text-center mt-1">"Dedicated to sustainability and expanding student opportunities."</p>
-    <div class="mt-4 flex justify-center">
-      <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full transition-all duration-300 shadow-md">
-        Ask Me
-      </button>
-    </div>
-  </div>
-
-  
-
-
-  
-
-
-  
-  
-  
-
-</div>
-
-
-
+<?php endforeach; ?>
 </section>
 
-
 <div class="container">
-
-
 
 </div>
 </div>
   
   	<?php include 'includes/footer.php'; ?>
   	<?php include 'includes/ballot_modal.php'; ?>
-
-
+    
 </div>
 <!-- ./wrapper -->
-
 <?php include 'includes/scripts.php'; ?>
 <?php
   $sql = "SELECT * FROM positions ORDER BY priority ASC";
@@ -241,8 +213,6 @@
   }
 ?>
 
-
-
 <script>
 $(function(){
 	$('.content').iCheck({
@@ -301,7 +271,6 @@ $(function(){
 });
 </script>
 
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const boxes = document.querySelectorAll('.small-box');
@@ -324,8 +293,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-
-
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const toggleBtn = document.querySelector(".sidebar-toggle");
@@ -345,6 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 </script>
+
 
 </body>
 </html>
