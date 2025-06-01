@@ -102,7 +102,10 @@ if ($result && $result->num_rows > 0) {
                   <a class='btn btn-info btn-sm editElection' href='#editElectionModal' data-id='".$row['id']."'>
                   <i class='fas fa-edit'></i> Edit
               </a>
-                                 
+              <a class='btn btn-danger btn-sm resetElection' href='#resetElectionModal' data-id='".$row['id']."'>
+              <i class='fas fa-edit'></i> Reset
+          </a>
+                             
                   </td>
                 </tr>";
               }
@@ -160,6 +163,14 @@ $(function(){
   });
 
 
+  $(document).on('click', '.resetElection', function(e){
+    e.preventDefault();
+    $('#resetElectionModal').modal('show');
+    var id = $(this).data('id');
+    getRow(id);
+  });
+
+
 
   $(document).on('click', '.deleteElection', function(e){
     e.preventDefault();
@@ -180,6 +191,8 @@ function getRow(id){
     dataType: 'json',
     success: function(response){
       $('#edit_election_id').val(response.id);
+      $('#edit_election_id_reset').val(response.id);
+
       $('#edit_election_name').val(response.election_name);
       $('#edit_election_date').val(response.election_date);
       $('#edit_start_time').val(response.start_time);

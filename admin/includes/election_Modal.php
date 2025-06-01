@@ -162,3 +162,38 @@
         </div>
     </div>
 </div>
+
+
+
+
+<!-- reset -->
+<!-- Reset Election Modal -->
+<div class="modal fade" id="resetElectionModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="reset_election.php">
+        <div class="modal-header bg-danger">
+          <h4 class="modal-title text-white">Reset Election</h4>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Hidden ID -->
+          <input type="hidden" name="id" id="edit_election_id_reset">
+          <!-- Hidden flag to trigger reset -->
+
+          <p>Are you sure you want to <strong>reset this election</strong>? This will delete all associated votes.</p>
+
+          <div class="alert alert-warning">
+            <strong>Warning:</strong> This action cannot be undone.
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" name="reset" class="btn btn-danger">Yes, Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

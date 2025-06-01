@@ -224,7 +224,18 @@
 
       if (distance < 0) {
         clearInterval(timer);
-        countdown.innerHTML = "<?php echo ($voting_status == 'Voting yet to start') ? 'Voting Started' : 'Voting Closed'; ?>";
+        countdown.innerHTML = <?php
+if ($voting_status == 'Voting yet to start') {
+    echo 'Voting yet to start';
+} elseif ($voting_status == 'Voting ongoing') {
+    echo 'Voting Closed';
+} elseif ($voting_status == 'Voting completed') {
+    echo 'Results Published';
+} else {
+    echo 'Unknown Status';
+}
+?>
+;
         return;
       }
 
