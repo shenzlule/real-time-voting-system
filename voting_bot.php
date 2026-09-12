@@ -265,7 +265,7 @@
   <!-- Send Button with Animation -->
   <button onclick="sendMessage()" 
           class="ml-4 flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1">
-    <i class="fa fa-paper-plane"></i> Send
+    <i class="fa fa-paper-plane"></i> Ask
   </button>
 </div>
 
