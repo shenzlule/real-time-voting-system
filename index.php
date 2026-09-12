@@ -66,7 +66,7 @@
   <!-- Title -->
   <div class="text-center mb-8 animate-fade-in-up">
     <h1 class="text-5xl font-extrabold text-gradient bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-700">
-      <span>Real-Time</span> Voting System
+      <span>UMU Real Time</span> Voting System With Chatbot 
     </h1>
     <p class="text-gray-700 mt-2 text-lg italic">Secure and seamless voting experience</p>
   </div>
